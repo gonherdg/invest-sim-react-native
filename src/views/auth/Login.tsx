@@ -1,19 +1,39 @@
-import React from 'react';
-import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
-import GS from '../../../src/style/style';
+import React, {useState} from 'react';
+import {SafeAreaView, StyleSheet, View, Text, TextInput, Button} from 'react-native';
+import GS from 'src/style/style';
 import {NavigationProp} from '@react-navigation/core';
 import {connect} from 'react-redux';
 
 const Login: React.FC<{
   navigation: NavigationProp<any>;
-  getFavourites: Function;
   getUser: Function;
   login: Function;
-}> = ({}) => {
+}> = ({navigation}) => {
+  const [username, onChangeUsername] = useState();
+  const [password, onChangePassword] = useState();
+
+  const onLogin = () => {
+    console.log('Login');
+    navigation.navigate('MainNavigator');
+  };
+
   return (
     <SafeAreaView style={[GS.containerAuth, S.container]}>
       <View style={S.container}>
-        <Text>GON GON GON GON</Text>
+        <Text style={[S.text]}>Login</Text>
+        <TextInput
+          style={S.input}
+          onChangeText={() => onChangeUsername}
+          value={username}
+          placeholder="username"
+        />
+        <TextInput
+          style={S.input}
+          onChangeText={() => onChangePassword}
+          value={password}
+          placeholder="username"
+        />
+        <Button onPress={onLogin} title="Login" />
       </View>
     </SafeAreaView>
   );
@@ -22,7 +42,12 @@ const Login: React.FC<{
 const S = StyleSheet.create({
   container: {
     alignItems: 'center',
-    bakgroundColor: 'yellow',
+    backgroundColor: 'rgb(0,255,130)',
+    padding: 20,
+  },
+  text: {
+    fontSize: 40,
+    margin: 10,
   },
   input: {
     width: '100%',

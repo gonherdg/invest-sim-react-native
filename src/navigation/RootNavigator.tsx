@@ -1,9 +1,15 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {colors} from '../../src/style/style';
+import {colors} from 'src/style/style';
+import Login from 'src/views/auth/Login';
+import Signup from 'src/views/auth/Signup';
+import Splash from 'src/views/auth/Splash';
+import Charts from 'src/views/main/Charts';
+import Profile from 'src/views/main/Profile';
+import Wallet from 'src/views/main/Wallet';
 import AuthNavigator from './AuthNavigator';
-//import MainNavigator from "./MainNavigator";
+import MainNavigator from './MainNavigator';
 
 const MyTheme = {
   dark: false,
@@ -23,11 +29,10 @@ const RootNavigator: React.FC = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
-        screenOptions={{gestureEnabled: false, headerShown: false}}>
+        screenOptions={{gestureEnabled: false, headerShown: true}}>
+        {/* <Stack.Screen name="AuthNavigator" component={Login} /> */}
         <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
-        {/*
         <Stack.Screen name="MainNavigator" component={MainNavigator} />
-        */}
       </Stack.Navigator>
     </NavigationContainer>
   );
