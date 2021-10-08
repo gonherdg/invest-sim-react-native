@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: true}}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="HomeNavigator" component={HomeNavigator} />
       {/*
       <Stack.Screen name="Charts" component={Charts} />

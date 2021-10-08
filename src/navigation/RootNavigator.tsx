@@ -29,7 +29,7 @@ const RootNavigator: React.FC = () => {
   return (
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator
-        screenOptions={{gestureEnabled: false, headerShown: true}}>
+        screenOptions={{gestureEnabled: false, headerShown: false}}>
         {/* <Stack.Screen name="AuthNavigator" component={Login} /> */}
         <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
         <Stack.Screen name="MainNavigator" component={MainNavigator} />

@@ -27,7 +27,7 @@ export default StyleSheet.create({
   containerAuth: {
     flex: 1,
     backgroundColor: colors.background,
-    marginHorizontal: 0,
+    marginHorizontal: 50,
   },
   containerCenter: {
     flex: 1,
