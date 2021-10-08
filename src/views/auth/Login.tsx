@@ -39,6 +39,7 @@ const Login: React.FC<{
           value={username}
           placeholder="Username"
           onSubmitEditing={() => { secondTextInput.focus(); }}
+          blurOnSubmit={false}
         />
         <TextInput
           returnKeyType="send"
@@ -51,6 +52,7 @@ const Login: React.FC<{
           secureTextEntry={true}
           ref={(input: any) => {setSecondTextInput(input);}}
           onSubmitEditing={onLogin}
+          blurOnSubmit={false}
         />
         <Pressable onPress={onLogin}>
           <Text style={[GS.pButton, S.button, S.control]}>Login</Text>
