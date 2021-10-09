@@ -1,6 +1,13 @@
 import {Dimensions, StyleSheet} from 'react-native';
 
 export const colors = {
+  comp1: '#533E80',
+  comp2: '#C7A683',
+  comp3: '#5BC76B',
+  comp4: '#3E7A47',
+  comp5: '#8B6FC7',
+  comp6: '#8FA6FA',
+  comp7: '#454B61',
   white: 'white',
   blue: '#233975',
   blueDark: '#03045e',

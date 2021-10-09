@@ -1,8 +1,17 @@
 import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, View, Text, TextInput, FlatList, Image} from 'react-native';
 import GS from 'src/style/style';
+import { colors } from 'src/style/gonstyle';
 import {NavigationProp} from '@react-navigation/core';
 import {connect} from 'react-redux';
+
+interface ItemInterface {
+  title: string,
+  subtitle: string,
+  imgSrc: string,
+  price: string,
+  variation: string,
+};
 
 const DATA = [
   {
@@ -103,19 +112,19 @@ const DATA = [
   },
 ];
 
-const Item = ({ title, subtitle, imgSrc, price, variation }) => (
+const Item = ( item: ItemInterface) => (
   <View style={S.item}>
 
     <View style={S.firstBox}>
       <View style={S.imageWrapper}>
         <Image
           style={S.tinyLogo}
-          source={{uri: imgSrc}}
+          source={{uri: item.imgSrc}}
         />
       </View>
       <View style={S.secondBox}>
-        <Text style={S.title}>{title}</Text>
-        <Text style={S.subtitle}>{subtitle}</Text>  
+        <Text style={S.title}>{item.title}</Text>
+        <Text style={S.subtitle}>{item.subtitle}</Text>  
       </View>
     </View>
 
@@ -125,8 +134,8 @@ const Item = ({ title, subtitle, imgSrc, price, variation }) => (
     />
 
     <View style={S.secondBox}>
-      <Text style={S.price}>{price}</Text>
-      <Text style={S.variation}>{variation}</Text>
+      <Text style={S.price}>{item.price}</Text>
+      <Text style={S.variation}>{item.variation}</Text>
     </View>
   
   </View>
@@ -135,7 +144,7 @@ const Item = ({ title, subtitle, imgSrc, price, variation }) => (
 const Charts: React.FC<{
   navigation: NavigationProp<any>;
 }> = ({}) => {
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}: ItemInterface) => (
     <Item 
       title={item.title} 
       subtitle={item.subtitle} 
@@ -161,7 +170,7 @@ const Charts: React.FC<{
 
 const S = StyleSheet.create({
   container: {
-    backgroundColor: '#444',
+    backgroundColor: colors.comp6,
     padding: 0,
   },
   text: {
@@ -180,7 +189,7 @@ const S = StyleSheet.create({
 
   list: {
     flex: 1,
-    backgroundColor: 'rgb(255,255,255)',
+    backgroundColor: '#fff',
     padding: 10,
     paddingVertical: 15,
     borderRadius: 14,
@@ -198,11 +207,11 @@ const S = StyleSheet.create({
     borderRadius: 20,
   },
   title: {
-    color: '#222',
+    color: colors.comp7,
     fontSize: 15,
   },
   subtitle: {
-    color: '#999',
+    color: '#99b',
     fontSize: 13,
   },
 
@@ -241,13 +250,13 @@ const S = StyleSheet.create({
   price: {
     marginHorizontal: 3,
     textAlign: 'right',
-    color: '#222',
+    color: colors.comp7,
     fontSize: 15,
   },
   variation: {
     marginHorizontal: 3,
     textAlign: 'right',
-    color: '#0a0',
+    color: '#193',
     fontSize: 13,
   },
 });
