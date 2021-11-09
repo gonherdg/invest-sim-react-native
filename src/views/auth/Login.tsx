@@ -1,51 +1,70 @@
 import React, {useEffect, useState} from 'react';
 import {
-  SafeAreaView, 
+  SafeAreaView,
   StyleSheet,
   View,
-  Text, 
-  TextInput, 
+  Text,
+  TextInput,
   Pressable,
   ActivityIndicator,
   Dimensions,
 } from 'react-native';
 import GS from 'src/style/style';
-import { colors } from 'src/style/gonstyle'
+import {colors} from 'src/style/gonstyle';
 import {NavigationProp} from '@react-navigation/core';
 import {connect} from 'react-redux';
-import { whileStatement } from '@babel/types';
+// import {whileStatement} from '@babel/types';
+import {login as actionLogin} from 'src/features/UserSlice';
 
 const Login: React.FC<{
   navigation: NavigationProp<any>;
   getUser: Function;
   login: Function;
-}> = ({navigation}) => {
-  const [secondTextInput, setSecondTextInput] = useState(<TextInput/>);
-  const [username, onChangeUsername] = useState();
-  const [password, onChangePassword] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState(null);
+  actionLogin: Function;
+}> = ({navigation, actionLogin}) => {
+  const [secondTextInput, setSecondTextInput] = useState(<TextInput />);
+  const [email, onChangeEmail] = useState('');
+  const [password, onChangePassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  // const [userToken, setUserToken] = useState(null);
+  const [errors, setErrors] = useState(false);
 
-  const onLogin = () => {
+  const validateEmail = (_email: string) => {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(_email).toLowerCase());
+  };
+
+  const onLogin = async () => {
     //setUserToken('asdf');
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      navigation.navigate('MainNavigator');
-    }, 500);
+    console.log('LOGIN...');
+    setLoading(true);
+
+    if (!validateEmail(email)) {
+      setErrors(true);
+      console.log('INVALID EMAIL:', email);
+    } else {
+      try {
+        const result = await actionLogin({email, password});
+        console.log(result);
+        if (result.payload && result.payload.email) {
+          navigation.navigate('MainNavigator', {screen: 'Home'});
+        } else {
+          setErrors(true);
+          console.error('Wrong login info.');
+        }
+      } catch (error) {
+        setErrors(true);
+        console.error(error);
+      }
+    }
+
+    setLoading(false);
   };
 
   const onRegister = () => {
-    //setUserToken('asdf');
-    //setIsLoading(false);
     navigation.navigate('Signup');
-  }
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 700);
-  }, []);
+  };
 
   /*
   if(isLoading) {
@@ -63,25 +82,29 @@ const Login: React.FC<{
         <Text style={[S.text]}>Login</Text>
         <TextInput
           returnKeyType="next"
-          textContentType="username"
-          placeholderTextColor='#aaa'
+          textContentType="emailAddress"
+          placeholderTextColor="#aaa"
           style={[S.input, S.control]}
-          onChangeText={() => onChangeUsername}
-          value={username}
-          placeholder="Username"
-          onSubmitEditing={() => { secondTextInput.focus(); }}
+          onChangeText={onChangeEmail}
+          value={email}
+          placeholder="Email"
+          onSubmitEditing={() => {
+            secondTextInput.focus();
+          }}
           blurOnSubmit={false}
         />
         <TextInput
           returnKeyType="send"
           textContentType="password"
-          placeholderTextColor='#aaa'
+          placeholderTextColor="#aaa"
           style={[S.input, S.control]}
-          onChangeText={() => onChangePassword}
+          onChangeText={onChangePassword}
           value={password}
           placeholder="Password"
           secureTextEntry={true}
-          ref={(input: any) => {setSecondTextInput(input);}}
+          ref={(input: any) => {
+            setSecondTextInput(input);
+          }}
           onSubmitEditing={onLogin}
           blurOnSubmit={false}
         />
@@ -93,11 +116,11 @@ const Login: React.FC<{
         </Pressable>
       </View>
 
-      { isLoading &&
+      {loading && (
         <View style={[S.absoluteScreen, {backgroundColor: '#111c'}]}>
           <ActivityIndicator size="large" />
         </View>
-      }
+      )}
     </SafeAreaView>
   );
 };
@@ -127,7 +150,6 @@ const S = StyleSheet.create({
     borderRadius: 20,
     margin: 10,
     marginHorizontal: 10,
-    
   },
   title: {
     textAlign: 'center',
@@ -159,11 +181,11 @@ const S = StyleSheet.create({
 
   absoluteScreen: {
     position: 'absolute',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center',
     height: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
   },
 });
 
-export default connect(() => ({}), {})(Login);
+export default connect(() => ({}), {actionLogin})(Login);
