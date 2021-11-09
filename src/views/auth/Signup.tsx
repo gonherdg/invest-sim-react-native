@@ -1,35 +1,73 @@
 import React, {useState} from 'react';
 import {
-  SafeAreaView, 
+  SafeAreaView,
   StyleSheet,
   View,
-  Text, 
-  TextInput, 
-  Pressable
+  Text,
+  TextInput,
+  Pressable,
+  Alert,
 } from 'react-native';
 import GS from 'src/style/style';
-import { colors } from 'src/style/gonstyle'
+import {colors} from 'src/style/gonstyle';
 import {NavigationProp} from '@react-navigation/core';
 import {connect} from 'react-redux';
-import { whileStatement } from '@babel/types';
+import api from 'src/api';
+// import {whileStatement} from '@babel/types';
 
 const Login: React.FC<{
   navigation: NavigationProp<any>;
   getUser: Function;
   login: Function;
 }> = ({navigation}) => {
-  const [secondTextInput, setSecondTextInput] = useState(<TextInput/>);
-  const [thirdTextInput, setThirdTextInput] = useState(<TextInput/>);
-  const [username, onChangeUsername] = useState();
-  const [password, onChangePassword] = useState();
+  const [secondTextInput, setSecondTextInput] = useState(<TextInput />);
+  const [thirdTextInput, setThirdTextInput] = useState(<TextInput />);
+  const [email, onChangeEmail] = useState('');
+  const [password, onChangePassword] = useState('');
+  const [confirmPassword, onChangeConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const validateEmail = (_email: string) => {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(_email).toLowerCase());
+  };
 
   const onLogin = () => {
     navigation.navigate('Login');
   };
 
-  const onRegister = () => {
-    navigation.navigate('MainNavigator');
-  }
+  const onRegister = async () => {
+    setLoading(true);
+
+    if (!validateEmail(email)) {
+      setLoading(false);
+      Alert.alert('Invalid email:', email);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert(
+        'Repeated password is not equal to the new one',
+        'Please repeat the password correctly',
+      );
+      setLoading(false);
+      return;
+    }
+
+    let res = await api.auth.signup(email, password, email, 'Client');
+    if (res.error) {
+      Alert.alert('An error occurred');
+      setLoading(false);
+      return;
+    }
+
+    if (!res.error) {
+      Alert.alert('Successfully registered', 'Now you can login');
+      navigation.navigate('AuthNavigator', {screen: 'Login'});
+    }
+    setLoading(false);
+  };
 
   return (
     <SafeAreaView style={[GS.containerAuth, S.out]}>
@@ -38,38 +76,46 @@ const Login: React.FC<{
         <Text style={[S.text]}>Signup</Text>
         <TextInput
           returnKeyType="next"
-          textContentType="username"
-          placeholderTextColor='#aaa'
+          textContentType="emailAddress"
+          placeholderTextColor="#aaa"
           style={[S.input, S.control]}
-          onChangeText={() => onChangeUsername}
-          value={username}
-          placeholder="Username"
-          onSubmitEditing={() => { secondTextInput.focus(); }}
+          onChangeText={onChangeEmail}
+          value={email}
+          placeholder="Email"
+          onSubmitEditing={() => {
+            secondTextInput.focus();
+          }}
           blurOnSubmit={false}
         />
         <TextInput
           returnKeyType="send"
           textContentType="password"
-          placeholderTextColor='#aaa'
+          placeholderTextColor="#aaa"
           style={[S.input, S.control]}
-          onChangeText={() => onChangePassword}
+          onChangeText={onChangePassword}
           value={password}
           placeholder="Password"
           secureTextEntry={true}
-          ref={(inputPassword: any) => {setSecondTextInput(inputPassword);}}
-          onSubmitEditing={() => { thirdTextInput.focus(); }}
+          ref={(inputPassword: any) => {
+            setSecondTextInput(inputPassword);
+          }}
+          onSubmitEditing={() => {
+            thirdTextInput.focus();
+          }}
           blurOnSubmit={false}
         />
         <TextInput
           returnKeyType="send"
           textContentType="password"
-          placeholderTextColor='#aaa'
+          placeholderTextColor="#aaa"
           style={[S.input, S.control]}
-          onChangeText={() => onChangePassword}
-          value={password}
+          onChangeText={onChangeConfirmPassword}
+          value={confirmPassword}
           placeholder="Repeat password"
           secureTextEntry={true}
-          ref={(inputRepeatPassord: any) => {setThirdTextInput(inputRepeatPassord);}}
+          ref={(inputRepeatPassord: any) => {
+            setThirdTextInput(inputRepeatPassord);
+          }}
           onSubmitEditing={onRegister}
           blurOnSubmit={false}
         />
@@ -109,7 +155,6 @@ const S = StyleSheet.create({
     borderRadius: 20,
     margin: 10,
     marginHorizontal: 10,
-    
   },
   title: {
     textAlign: 'center',

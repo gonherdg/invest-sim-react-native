@@ -15,8 +15,13 @@ export default class Auth extends Router {
     return data;
   }
 
-  async signup(code: string, email: string) {
-    return await this.connection.POST('/auth/signup', {email, code});
+  async signup(email: string, password: string, name: string, type: string) {
+    return await this.connection.POST('/auth/signup', {
+      email,
+      password,
+      name,
+      type,
+    });
   }
 
   async logout() {
