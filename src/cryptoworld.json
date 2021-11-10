@@ -1,0 +1,41 @@
+{
+  "icons": {
+    "BNB": "https://cryptologos.cc/logos/binance-coin-bnb-logo.png?v=014",
+    "BTC": "https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=014",
+    "ETH": "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=014",
+    "USDT": "https://cryptologos.cc/logos/tether-usdt-logo.png?v=014",
+    "DOT": "https://cryptologos.cc/logos/polkadot-new-dot-logo.png?v=014",
+    "ADA": "https://cryptologos.cc/logos/cardano-ada-logo.png?v=014",
+    "SOL": "https://cryptologos.cc/logos/solana-sol-logo.png?v=014",
+    "USDC": "https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=014",
+    "DOGE": "https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=014",
+    "SHIB": "https://cryptologos.cc/logos/shiba-inu-shib-logo.png?v=014"
+  },
+  "largeName": {
+    "BNB": "Binance coin",
+    "BTC": "Bitcoin",
+    "ETH": "Ethereum",
+    "USDT": "Tether",
+    "DOT": "Polkadot",
+    "FTM": "Fantom",
+    "CHZ": "Chiliz",
+    "BTCST": "Bitcoin Standard Hashrate Token",
+    "ADA": "Cardano",
+    "SLP": "Smooth Love Potion",
+    "SHIB": "SHIBA INU",
+    "SOL": "Solana",
+    "DOGE": "Dogecoin",
+    "XRP": "XRP",
+    "USDC": "USD Coin",
+    "LUNA": "Terra",
+    "UNI": "Uniswap",
+    "AVAX": "Avalanche",
+    "BUSD": "Binance USD",
+    "LINK": "Chainlink",
+    "LTC": "Litecoin",
+    "ALGO": "Algorand",
+    "BCH": "Bitcoin Cash",
+    "AXS": "Axie Infinity",
+    "DAI": "Dai"
+  }
+}

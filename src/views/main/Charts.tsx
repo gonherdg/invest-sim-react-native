@@ -1,17 +1,18 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
-  TextInput,
   FlatList,
   Image,
+  Alert,
 } from 'react-native';
 import GS from 'src/style/style';
 import {colors} from 'src/style/gonstyle';
 import {NavigationProp} from '@react-navigation/core';
 import {connect} from 'react-redux';
+import api from 'src/api';
 
 interface ItemInterface {
   title: string;
@@ -157,6 +158,8 @@ const Item = (item: ItemInterface) => (
 const Charts: React.FC<{
   navigation: NavigationProp<any>;
 }> = ({}) => {
+  const [data, setData]: Array<any> = useState([]);
+
   const renderItem = ({item}: ItemInterface) => (
     <Item
       title={item.title}
@@ -167,6 +170,16 @@ const Charts: React.FC<{
     />
   );
 
+  const getChartData = async () => {
+    let res = await api.wallet.getMyWallet();
+    console.log('my wallet:', res);
+  };
+
+  useEffect(() => {
+    setData(DATA);
+    getChartData();
+  }, []);
+
   return (
     <SafeAreaView style={[GS.containerAuth, S.container]}>
       <View style={S.container}>
@@ -174,7 +187,7 @@ const Charts: React.FC<{
       </View>
       <FlatList
         style={[S.list]}
-        data={DATA}
+        data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />

@@ -1,11 +1,11 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import api from 'src/api';
 import {Response} from 'src/types/api';
-import {UserReducerType} from 'src/types/redux/user';
-import UserType from 'src/types/user';
+// import {UserReducerType} from 'src/types/redux/user';
+import CryptoType from 'src/types/crypto';
 
 export const getUser = createAsyncThunk('user/getUser', async () => {
-  const response: Response<UserType> = await api.auth.verify();
+  const response: Response<CryptoType> = await api.auth.verify();
   return response.data;
 });
 
@@ -18,14 +18,14 @@ export const login = createAsyncThunk(
     email: string;
     password: string;
   }): Promise<any> => {
-    const response: Response<UserType> = await api.auth.login(email, password);
+    const response: Response<CryptoType> = await api.auth.login(email, password);
     console.log('userSlice:', response);
     return response;
   },
 );
 
 export const logout = createAsyncThunk('user/logout', async () => {
-  const response: Response<UserType> = await api.auth.logout();
+  const response: Response<CryptoType> = await api.auth.logout();
   return response.data;
 });
 
@@ -33,7 +33,7 @@ const initialState: UserReducerType = {
   loading: true,
 };
 
-const userSlice = createSlice({
+const cryptoSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {},
@@ -48,7 +48,6 @@ const userSlice = createSlice({
     builder.addCase(login.fulfilled, (state: UserReducerType, action: any) => {
       state.user = action.payload.user;
       state.loading = false;
-      console.log('LOGIN ACTION:', action);
     });
     builder.addCase(logout.fulfilled, (state: any) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -59,4 +58,4 @@ const userSlice = createSlice({
 
 export const selectName = (state: UserReducerType) => state.user?.name;
 
-export default userSlice.reducer;
+export default cryptoSlice.reducer;

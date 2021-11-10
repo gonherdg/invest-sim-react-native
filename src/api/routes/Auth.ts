@@ -7,10 +7,14 @@ export default class Auth extends Router {
   }
 
   async login(email: string, password: string) {
-    const data = await this.connection.POST('/auth/login', {email, password});
-    if (data.data) {
-      await AsyncStorage.setItem('token', data.data.token);
-      await AsyncStorage.setItem('refreshToken', data.data.token);
+    const data: any = await this.connection.POST('/auth/login', {
+      email,
+      password,
+    });
+    console.log('AUTH ROUTE data:', data);
+    if (data) {
+      await AsyncStorage.setItem('token', data.token);
+      await AsyncStorage.setItem('refreshToken', data.refreshToken);
     }
     return data;
   }
