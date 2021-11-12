@@ -150,7 +150,7 @@ const S = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: colors.comp6,
+    backgroundColor: colors.comp5,
     padding: 20,
     borderRadius: 20,
     margin: 10,

@@ -161,7 +161,7 @@ const Wallet: React.FC<{
   const getMarketData = async () => {
     let res = await api.market.getCryptos();
     const data: any = {};
-    res.data.forEach((item) => {
+    res.data.forEach(item => {
       let newItem = {};
       newItem.id = item._id;
       newItem.title = item.shortName;
@@ -172,20 +172,29 @@ const Wallet: React.FC<{
       data[item.shortName] = newItem;
     });
     setMarketData(data);
+    return data;
   };
 
-  const getWalletData = async () => {
+  const getWallet = async (_marketData: undefined | Object): Promise<any> => {
     let res = await api.wallet.getMyWallet();
-    //console.log('my wallet:', res);
+    console.log('marketData:', _marketData);
     let subTotalBalance = 0.0;
-
-    const dataArray = [];
+    const dataArray: any = [];
     Object.entries(res).forEach((item, idx) => {
-      console.log(item, idx);
+      //console.log(item, idx);
       const shortName = item[0];
       const amount = item[1];
-      const valueInUSD = marketData[shortName].price * amount;
-      console.log('marketData[shortName]', marketData[shortName]);
+      const marketCoin = _marketData[shortName];
+      //console.log('price:', marketCoin);
+      let price = 0.0;
+      if (marketCoin) {
+        price = marketCoin.price;
+      }
+      let valueInUSD = 0.0;
+      if (price) {
+        valueInUSD = _marketData[shortName].price * amount;
+      }
+      console.log('marketData[shortName]', _marketData[shortName]);
       console.log('price:', valueInUSD);
       subTotalBalance += valueInUSD;
       const newItem = {
@@ -198,14 +207,18 @@ const Wallet: React.FC<{
       };
       dataArray.push(newItem);
     });
-    console.log('marketData', marketData);
+    console.log('marketData', _marketData);
     setTotalBalance(subTotalBalance);
     setData(dataArray);
   };
 
   useEffect(() => {
-    getMarketData();
-    getWalletData();
+    const getAllData = async () => {
+      const _marketData = await getMarketData();
+      getWallet(_marketData);
+    };
+    getAllData();
+    setInterval(getAllData, 20000);
   }, []);
 
   return (

@@ -6,7 +6,7 @@ export const colors = {
   comp3: '#5BC76B',
   comp4: '#3E7A47',
   comp5: '#8B6FC7',
-  comp6: '#8FA6FA',
+  comp6: '#2F264A',
   comp7: '#454B61',
   white: 'white',
   blue: '#233975',
