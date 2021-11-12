@@ -145,6 +145,8 @@ const Wallet: React.FC<{
   navigation: NavigationProp<any>;
 }> = ({}) => {
   const [data, setData]: Array<any> = useState([]);
+  const [marketData, setMarketData]: Array<any> = useState([]);
+  const [totalBalance, setTotalBalance]: Number = useState(0.0);
 
   const renderItem = ({item}: ItemInterface) => (
     <Item
@@ -156,27 +158,53 @@ const Wallet: React.FC<{
     />
   );
 
+  const getMarketData = async () => {
+    let res = await api.market.getCryptos();
+    const data: any = {};
+    res.data.forEach((item) => {
+      let newItem = {};
+      newItem.id = item._id;
+      newItem.title = item.shortName;
+      newItem.subtitle = item.name;
+      newItem.price = item.priceInUSD;
+      newItem.variation = '+0.00%';
+      newItem.imgSrc = crypto.icons[item.shortName];
+      data[item.shortName] = newItem;
+    });
+    setMarketData(data);
+  };
+
   const getWalletData = async () => {
     let res = await api.wallet.getMyWallet();
     //console.log('my wallet:', res);
-    let dataArray = [];
+    let subTotalBalance = 0.0;
+
+    const dataArray = [];
     Object.entries(res).forEach((item, idx) => {
       console.log(item, idx);
-      let newItem = {
+      const shortName = item[0];
+      const amount = item[1];
+      const valueInUSD = marketData[shortName].price * amount;
+      console.log('marketData[shortName]', marketData[shortName]);
+      console.log('price:', valueInUSD);
+      subTotalBalance += valueInUSD;
+      const newItem = {
         id: idx,
-        title: item[0],
-        subtitle: crypto.largeName[item[0]],
+        title: shortName,
+        subtitle: crypto.largeName[shortName],
         amount: item[1].toFixed(7),
-        imgSrc: crypto.icons[item[0]],
-        price: '?',
+        imgSrc: crypto.icons[shortName],
+        price: '$' + valueInUSD.toFixed(8),
       };
       dataArray.push(newItem);
     });
+    console.log('marketData', marketData);
+    setTotalBalance(subTotalBalance);
     setData(dataArray);
   };
 
   useEffect(() => {
-    setData([]);
+    getMarketData();
     getWalletData();
   }, []);
 
@@ -184,7 +212,7 @@ const Wallet: React.FC<{
     <SafeAreaView style={[GS.containerAuth, S.container]}>
       <View style={S.container}>
         <Text style={[S.text]}>Total Balance</Text>
-        <Text style={[S.totalBalance]}>$535.49</Text>
+        <Text style={[S.totalBalance]}>${totalBalance.toFixed(2)}</Text>
       </View>
       <View style={[S.listContainer]}>
         <FlatList

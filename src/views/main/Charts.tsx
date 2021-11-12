@@ -13,6 +13,7 @@ import {colors} from 'src/style/gonstyle';
 import {NavigationProp} from '@react-navigation/core';
 import {connect} from 'react-redux';
 import api from 'src/api';
+import * as crypto from 'src/cryptoworld.json';
 
 interface ItemInterface {
   title: string;
@@ -171,12 +172,25 @@ const Charts: React.FC<{
   );
 
   const getChartData = async () => {
-    let res = await api.wallet.getMyWallet();
-    console.log('my wallet:', res);
+    let res = await api.market.getCryptos();
+    console.log('market data:', res);
+
+    const data: any = [];
+    res.data.forEach((item) => {
+      let newItem = {};
+      newItem.id = item._id;
+      newItem.title = item.shortName;
+      newItem.subtitle = item.name;
+      newItem.price = item.priceInUSD;
+      newItem.variation = '+0.00%';
+      newItem.imgSrc = crypto.icons[item.shortName];
+      data.push(newItem);
+    });
+    setData(data);
   };
 
   useEffect(() => {
-    setData(DATA);
+    //setData(DATA);
     getChartData();
   }, []);
 

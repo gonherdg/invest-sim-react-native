@@ -4,8 +4,8 @@ import {Response} from 'src/types/api';
 // import {UserReducerType} from 'src/types/redux/user';
 import CryptoType from 'src/types/crypto';
 
-export const getUser = createAsyncThunk('user/getUser', async () => {
-  const response: Response<CryptoType> = await api.auth.verify();
+export const getCryptos = createAsyncThunk('market/getCryptos', async () => {
+  const response: Response<CryptoType> = await api.market.getCryptos();
   return response.data;
 });
 
@@ -24,22 +24,17 @@ export const login = createAsyncThunk(
   },
 );
 
-export const logout = createAsyncThunk('user/logout', async () => {
-  const response: Response<CryptoType> = await api.auth.logout();
-  return response.data;
-});
-
 const initialState: UserReducerType = {
   loading: true,
 };
 
 const cryptoSlice = createSlice({
-  name: 'user',
+  name: 'crypto',
   initialState,
   reducers: {},
   extraReducers: (builder: any) => {
     builder.addCase(
-      getUser.fulfilled,
+      getCryptos.fulfilled,
       (state: UserReducerType, action: any) => {
         state.user = action.payload;
         state.loading = false;

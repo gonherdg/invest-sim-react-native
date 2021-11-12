@@ -66,6 +66,11 @@ const Login: React.FC<{
     navigation.navigate('Signup');
   };
 
+  useEffect(() => {
+    onChangeEmail('test2@test.com');
+    onChangePassword('test');
+  }, []);
+
   /*
   if(isLoading) {
     return (
