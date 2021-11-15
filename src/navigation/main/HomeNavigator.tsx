@@ -1,20 +1,17 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import Charts from 'src/views/main/Charts';
-import Profile from 'src/views/main/Profile';
-import Wallet from 'src/views/main/Wallet';
+import Trade from 'src/views/main/Trade';
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
 
 const HomeNavigator: React.FC = () => {
   return (
-    <Tab.Navigator screenOptions={{headerShown: false}}>
-      <Tab.Screen name="Charts" component={Charts} />
-      <Tab.Screen name="Wallet" component={Wallet} />
-      <Tab.Screen name="Profile" component={Profile} />
-    </Tab.Navigator>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Charts" component={Charts} />
+      <Stack.Screen name="Trade" component={Trade} />
+    </Stack.Navigator>
   );
 };
 

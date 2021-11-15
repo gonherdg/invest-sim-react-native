@@ -8,6 +8,7 @@ import api from 'src/api';
 import * as crypto from 'src/cryptoworld.json';
 import BTC from 'src/components/icons/BTC';
 import CryptoRow from 'src/components/listItems/cryptoRow';
+import CurrencyAndAmount from 'src/components/input/currencyAndAmount';
 
 interface ItemInterface {
   title: string;
@@ -17,108 +18,8 @@ interface ItemInterface {
   variation: string;
   onPress: Function;
 }
-/*
-const DATA = [
-  {
-    id: 'abd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'BNB',
-    subtitle: 'BNB',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.BNB,
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'BTC',
-    subtitle: 'Bitcoin',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.BTC,
-  },
-  {
-    id: 's58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'ETH',
-    subtitle: 'Ethereum',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.ETH,
-  },
-  {
-    id: 'dbd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'BNB',
-    subtitle: 'BNB',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.BNB,
-  },
-  {
-    id: 'q3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'BTC',
-    subtitle: 'Bitcoin',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.BTC,
-  },
-  {
-    id: 'w58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'ETH',
-    subtitle: 'Ethereum',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.ETH,
-  },
-  {
-    id: 'ebd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'BNB',
-    subtitle: 'BNB',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.BNB,
-  },
-  {
-    id: 'z3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'BTC',
-    subtitle: 'Bitcoin',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.BTC,
-  },
-  {
-    id: 'x58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'ETH',
-    subtitle: 'Ethereum',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.ETH,
-  },
-  {
-    id: 'cbd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'BNB',
-    subtitle: 'BNB',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.BNB,
-  },
-  {
-    id: 'e3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'BTC',
-    subtitle: 'Bitcoin',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.BTC,
-  },
-  {
-    id: 'q58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'ETH',
-    subtitle: 'Ethereum',
-    price: '$423.48',
-    variation: '+3.38%',
-    imgSrc: crypto.icons.ETH,
-  },
-];
-*/
 
-const Charts: React.FC<{
+const Trade: React.FC<{
   navigation: NavigationProp<any>;
 }> = ({navigation}) => {
   const [data, setData]: Array<any> = useState([]);
@@ -126,7 +27,6 @@ const Charts: React.FC<{
   const renderItem = ({item}: ItemInterface) => {
     const onPress = () => {
       console.log('asdasd', item.title);
-      navigation.navigate('Trade');
     };
 
     return (
@@ -167,15 +67,14 @@ const Charts: React.FC<{
 
   return (
     <SafeAreaView style={[GS.containerAuth, S.container]}>
-      <View style={S.container}>
-        <Text style={[S.text]}>Markets</Text>
+      <View style={{}}>
+        <Text style={[S.title]}>Trade</Text>
       </View>
-      <FlatList
-        style={[S.list]}
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
+      <Text style={[S.text]}>From</Text>
+      <CurrencyAndAmount selectedCurrency={'USDT'} maxValue={1000}/>
+
+      <Text style={[S.text]}>To</Text>
+      <CurrencyAndAmount selectedCurrency={'USDT'} />
     </SafeAreaView>
   );
 };
@@ -184,10 +83,12 @@ const S = StyleSheet.create({
   container: {
     backgroundColor: colors.comp6,
     padding: 0,
+    paddingHorizontal: 10,
   },
   text: {
-    fontSize: 40,
-    margin: 10,
+    fontSize: 16,
+    marginTop: 12,
+    margin: 5,
     color: '#fff',
   },
   input: {
@@ -219,8 +120,10 @@ const S = StyleSheet.create({
     borderRadius: 20,
   },
   title: {
-    color: colors.comp7,
-    fontSize: 15,
+    color: colors.white,
+    fontSize: 30,
+    textAlign: 'center',
+    marginTop: 6,
   },
   subtitle: {
     color: '#99b',
@@ -273,4 +176,4 @@ const S = StyleSheet.create({
   },
 });
 
-export default connect(() => ({}), {})(Charts);
+export default connect(() => ({}), {})(Trade);

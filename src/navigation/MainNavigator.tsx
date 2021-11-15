@@ -1,25 +1,20 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+// import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import TabBar from 'src/components/navigation/TabBar';
+// import TabBar from 'src/components/navigation/TabBar';
 import Profile from 'src/views/main/Profile';
-import Charts from 'src/views/main/Charts';
 import Wallet from 'src/views/main/Wallet';
 import HomeNavigator from './main/HomeNavigator';
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
 
 const MainNavigator: React.FC = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="HomeNavigator" component={HomeNavigator} />
-      {/*
-      <Stack.Screen name="Charts" component={Charts} />
-      <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="Wallet" component={Wallet} />
-      */}
-    </Stack.Navigator>
+    <Tab.Navigator screenOptions={{headerShown: false}}>
+      <Tab.Screen name="HomeNavigator" component={HomeNavigator} />
+      <Tab.Screen name="Wallet" component={Wallet} />
+      <Tab.Screen name="Profile" component={Profile} />
+    </Tab.Navigator>
   );
 };
 
