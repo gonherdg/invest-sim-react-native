@@ -161,7 +161,6 @@ const Charts: React.FC<{
   };
 
   useEffect(() => {
-    //setData(DATA);
     getChartData();
   }, []);
 
@@ -182,13 +181,14 @@ const Charts: React.FC<{
 
 const S = StyleSheet.create({
   container: {
-    backgroundColor: colors.comp6,
+    backgroundColor: colors.white,
     padding: 0,
   },
   text: {
-    fontSize: 40,
+    fontSize: 30,
     margin: 10,
-    color: '#fff',
+    color: '#222',
+    textAlign: 'center',
   },
   input: {
     width: '100%',
@@ -203,9 +203,9 @@ const S = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 10,
-    paddingVertical: 15,
-    borderRadius: 14,
-    margin: 5,
+    paddingVertical: 1,
+    borderRadius: 4,
+    margin: 2,
     marginHorizontal: 9,
   },
   item: {
@@ -216,7 +216,7 @@ const S = StyleSheet.create({
     padding: 1,
     marginVertical: 1,
     marginHorizontal: 1,
-    borderRadius: 20,
+    borderRadius: 6,
   },
   title: {
     color: colors.comp7,

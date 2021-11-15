@@ -44,7 +44,7 @@ const CryptoRow = (item: ItemInterface) => {
         />
 
         <View style={S.secondBox}>
-          <Text style={S.price}>{item.price}</Text>
+          <Text style={S.price}>{item.price.toFixed(4)}</Text>
           <Text style={S.variation}>{item.variation}</Text>
         </View>
       </TouchableOpacity>

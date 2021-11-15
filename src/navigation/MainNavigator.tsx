@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 const MainNavigator: React.FC = () => {
   return (
     <Tab.Navigator screenOptions={{headerShown: false}}>
-      <Tab.Screen name="HomeNavigator" component={HomeNavigator} />
+      <Tab.Screen name="Market" component={HomeNavigator} />
       <Tab.Screen name="Wallet" component={Wallet} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
