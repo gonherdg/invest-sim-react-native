@@ -39,7 +39,7 @@ const ChooseCurrency: React.FC<{onPress: Function; style: any}> = ({
 
   const getChartData = async () => {
     let res = await api.market.getCryptos();
-    console.log('market data:', res);
+    //console.log('market data:', res);
 
     const _data: any = [];
     res.data.forEach(item => {

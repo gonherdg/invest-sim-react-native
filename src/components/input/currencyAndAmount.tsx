@@ -8,19 +8,27 @@ import {connect} from 'react-redux';
 
 const CurrencyAndAmount: React.FC<{
   selectedCurrency: String;
-  value: Number;
+  value: String;
   maxValue: Number | undefined;
   onPress: any;
+  onAmountChanged: any;
   style: any;
-}> = ({selectedCurrency = 'ETH', maxValue = undefined, onPress, style, value}) => {
-  const [amount, setAmount] = useState(0);
+}> = ({
+  selectedCurrency = 'ETH',
+  maxValue = undefined,
+  onPress,
+  onAmountChanged,
+  style,
+  value,
+}) => {
+  const [amount, setAmount] = useState('0');
 
   const onMax = () => {
     console.log('onMax');
   };
 
   useEffect(() => {
-    setAmount(value);
+    //setAmount(value);
   }, []);
 
   return (
@@ -28,14 +36,23 @@ const CurrencyAndAmount: React.FC<{
       <View style={[S.container, S.item]}>
         <TouchableOpacity style={S.item} onPress={onPress}>
           <View style={S.imageWrapper}>
-            <Image style={S.tinyLogo} source={{uri: crypto.icons[selectedCurrency]}} />
+            <Image
+              style={S.tinyLogo}
+              source={{uri: crypto.icons[selectedCurrency]}}
+            />
           </View>
           <Text style={[S.currency, S.input]}>{selectedCurrency}</Text>
           <Text style={[S.amountGrey, S.input]}>|</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={S.centerBlock}>
-          <TextInput style={[S.amount, S.input]} keyboardType={'numeric'} />
+          <TextInput
+            style={[S.amount, S.input]}
+            keyboardType={'numeric'}
+            placeholder={'0'}
+            onChangeText={(text: string) => onAmountChanged(text)}
+            value={value}
+          />
         </TouchableOpacity>
 
         <TouchableOpacity style={S.centerBlock} onPress={onMax}>

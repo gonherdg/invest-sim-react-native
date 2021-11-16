@@ -177,7 +177,7 @@ const Wallet: React.FC<{
 
   const getWallet = async (_marketData: undefined | Object): Promise<any> => {
     let res = await api.wallet.getMyWallet();
-    console.log('marketData:', _marketData);
+    //console.log('marketData:', _marketData);
     let subTotalBalance = 0.0;
     const dataArray: any = [];
     Object.entries(res).forEach((item, idx) => {
@@ -194,8 +194,8 @@ const Wallet: React.FC<{
       if (price) {
         valueInUSD = _marketData[shortName].price * amount;
       }
-      console.log('marketData[shortName]', _marketData[shortName]);
-      console.log('price:', valueInUSD);
+      //console.log('marketData[shortName]', _marketData[shortName]);
+      //console.log('price:', valueInUSD);
       subTotalBalance += valueInUSD;
       const newItem = {
         id: idx,
@@ -207,7 +207,7 @@ const Wallet: React.FC<{
       };
       dataArray.push(newItem);
     });
-    console.log('marketData', _marketData);
+    //console.log('marketData', _marketData);
     setTotalBalance(subTotalBalance);
     setData(dataArray);
   };
