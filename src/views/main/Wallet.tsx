@@ -6,6 +6,7 @@ import {
   Text,
   FlatList,
   Image,
+  Alert,
 } from 'react-native';
 import GS from 'src/style/style';
 import {colors} from 'src/style/gonstyle';
@@ -13,6 +14,9 @@ import {NavigationProp} from '@react-navigation/core';
 import {connect} from 'react-redux';
 import api from 'src/api';
 import * as crypto from 'src/cryptoworld.json';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import CurrencyAndAmount from 'src/components/input/currencyAndAmount';
+import ChooseCurrency from 'src/components/input/ChooseCurrency';
 
 interface ItemInterface {
   title: string;
@@ -147,6 +151,12 @@ const Wallet: React.FC<{
   const [data, setData]: Array<any> = useState([]);
   const [marketData, setMarketData]: Array<any> = useState([]);
   const [totalBalance, setTotalBalance]: Number = useState(0.0);
+  const [viewState, setViewState]: any = useState('wallet');
+  const [chooseCurrency, setChooseCurrency] = useState(false);
+  const [newCurrencyInput, setNewCurrencyInput] = useState({
+    currency: 'USDT',
+    amount: '',
+  });
 
   const renderItem = ({item}: ItemInterface) => (
     <Item
@@ -155,13 +165,53 @@ const Wallet: React.FC<{
       imgSrc={item.imgSrc}
       price={item.price}
       amount={item.amount}
+      variation={undefined}
     />
   );
+
+  const onAddPress = () => {
+    setViewState('addCurrency');
+  };
+
+  const onAddClosePress = () => {
+    setChooseCurrency(false);
+    setViewState('wallet');
+  };
+
+  const onSelectedCurrency = (shortName: string) => {
+    console.log('Choosen:', shortName);
+    setChooseCurrency(false);
+    setNewCurrencyInput({currency: shortName, amount: newCurrencyInput.amount});
+  };
+
+  const onAmountChanged = (newAmount: string) => {
+    setNewCurrencyInput({
+      currency: newCurrencyInput.currency,
+      amount: newAmount,
+    });
+  };
+
+  const onAddConfirm = async () => {
+    const _amount = parseFloat(newCurrencyInput.amount);
+    const _currency = newCurrencyInput.currency;
+    if (_amount <= 0 || isNaN(_amount)) {
+      Alert.alert("The amount can't be zero or negative");
+      return;
+    }
+    const obj = {
+      deposit: {
+        [_currency]: _amount,
+      },
+    };
+    let res = await api.wallet.deposit(obj);
+    Alert.alert(res.state);
+    setViewState('wallet');
+  };
 
   const getMarketData = async () => {
     let res = await api.market.getCryptos();
     const data: any = {};
-    res.data.forEach(item => {
+    res.data.forEach((item: any) => {
       let newItem = {};
       newItem.id = item._id;
       newItem.title = item.shortName;
@@ -223,23 +273,109 @@ const Wallet: React.FC<{
 
   return (
     <SafeAreaView style={[GS.containerAuth, S.container]}>
-      <View style={S.container}>
-        <Text style={[S.text]}>Total Balance</Text>
-        <Text style={[S.totalBalance]}>${totalBalance.toFixed(2)}</Text>
+      <View style={[S.flex]}>
+        <View style={S.container}>
+          <Text style={[S.text]}>Total Balance</Text>
+          <Text style={[S.totalBalance]}>${totalBalance.toFixed(2)}</Text>
+        </View>
+        {viewState === 'wallet' && (
+          <View>
+            <TouchableOpacity style={[S.buttonAdd]} onPress={onAddPress}>
+              <Text style={[S.textAdd]}>+</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {viewState !== 'wallet' && (
+          <View>
+            <TouchableOpacity style={[S.buttonClose]} onPress={onAddClosePress}>
+              <Text style={[S.textAdd]}>X</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
-      <View style={[S.listContainer]}>
-        <FlatList
-          style={[S.list]}
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
+      {viewState === 'wallet' && (
+        <View style={[S.listContainer]}>
+          <FlatList
+            style={[S.list]}
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+          />
+        </View>
+      )}
+      {viewState === 'addCurrency' && (
+        <CurrencyAndAmount
+          selectedCurrency={newCurrencyInput.currency}
+          style={undefined}
+          value={undefined}
+          maxValue={undefined}
+          onPress={() => setChooseCurrency(true)}
+          onAmountChanged={onAmountChanged}
+          onFocus={undefined}
+          onMax={undefined}
+          noEnoughMoney={undefined}
         />
-      </View>
+      )}
+      {chooseCurrency && (
+        <ChooseCurrency
+          style={[S.choose]}
+          onPress={onSelectedCurrency}
+          direction={''}
+          operation={'Deposit'}
+        />
+      )}
+      {viewState === 'addCurrency' && (
+        <TouchableOpacity style={[S.ok]} onPress={onAddConfirm}>
+          <Text style={[S.addConfirmText]}>ADD</Text>
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 };
 
 const S = StyleSheet.create({
+  addConfirmText: {
+    color: colors.white,
+    fontSize: 18,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    alignSelf: 'center',
+  },
+  ok: {
+    margin: 10,
+    alignSelf: 'center',
+    backgroundColor: colors.green,
+    borderRadius: 20,
+    height: 40,
+    width: 120,
+    justifyContent: 'center',
+  },
+  flex: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  buttonAdd: {
+    margin: 22,
+    backgroundColor: colors.green,
+    borderRadius: 20,
+    height: 40,
+    width: 40,
+  },
+  buttonClose: {
+    margin: 22,
+    backgroundColor: colors.yellow,
+    borderRadius: 20,
+    height: 40,
+    width: 40,
+  },
+  textAdd: {
+    color: colors.white,
+    fontSize: 27,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    alignSelf: 'center',
+  },
   container: {
     backgroundColor: '#fff',
     padding: 0,

@@ -18,4 +18,8 @@ export default class Wallet extends Router {
     console.log('finalObj:', finalObj);
     return await this.connection.POST('/wallet/exchange', finalObj);
   }
+
+  async deposit(obj) {
+    return await this.connection.POST('/wallet/deposit', obj);
+  }
 }

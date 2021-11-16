@@ -77,7 +77,7 @@ const Trade: React.FC<{
     Keyboard.dismiss();
   };
 
-  const onSelectedCurrency = (curr: any) => {
+  const onSelectedCurrency = (curr: string) => {
     console.log('onSelectedCurrency: ', curr);
     if (selectingInput === 'from') {
       setFromInput({currency: curr, amount: fromInput.amount});
@@ -298,6 +298,7 @@ const Trade: React.FC<{
           style={[S.choose]}
           onPress={onSelectedCurrency}
           direction={selectingInput}
+          operation={'Trade'}
         />
       )}
 

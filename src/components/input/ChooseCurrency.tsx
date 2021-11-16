@@ -19,12 +19,12 @@ const ChooseCurrency: React.FC<{
   onPress: Function;
   style: any;
   direction: string;
-}> = ({direction, onPress, style}) => {
+  operation: string;
+}> = ({direction, onPress, style, operation}) => {
   const [data, setData]: Array<any> = useState([]);
 
   const renderItem = ({item}: any) => {
     const onCurrencySelect = () => {
-      console.log('asdasd', item.title);
       onPress(item.title);
     };
 
@@ -64,7 +64,7 @@ const ChooseCurrency: React.FC<{
   return (
     <SafeAreaView style={[GS.containerAuth, style]}>
       <View style={S.container}>
-        <Text style={[S.title]}>Trade {direction}</Text>
+        <Text style={[S.title]}>{operation} {direction}</Text>
       </View>
       <FlatList
         style={[S.list, style]}
