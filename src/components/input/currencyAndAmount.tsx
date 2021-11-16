@@ -1,48 +1,48 @@
-import React, {useState} from 'react';
-import {
-  GestureResponderEvent,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {colors} from 'src/style/gonstyle';
-import BTC from '../icons/BTC';
+// import BTC from '../icons/BTC';
 import * as crypto from 'src/cryptoworld.json';
+import {connect} from 'react-redux';
 
-interface ItemInterface {
-  selectedCurrency: string;
-}
-
-const CurrencyAndAmount = ({selectedCurrency = 'ETH', maxValue = undefined}) => {
+const CurrencyAndAmount: React.FC<{
+  selectedCurrency: String;
+  value: Number;
+  maxValue: Number | undefined;
+  onPress: any;
+  style: any;
+}> = ({selectedCurrency = 'ETH', maxValue = undefined, onPress, style, value}) => {
   const [amount, setAmount] = useState(0);
 
-  const selectFrom = () => {
-    console.log('selectFrom');
+  const onMax = () => {
+    console.log('onMax');
   };
 
+  useEffect(() => {
+    setAmount(value);
+  }, []);
+
   return (
-    <View style={[S.container, S.item]}>
-      <TouchableOpacity style={S.item} onPress={selectFrom}>
-        <View style={S.imageWrapper}>
-          <Image style={S.tinyLogo} source={{uri: crypto.icons.ETH}} />
-        </View>
-        <Text style={[S.currency, S.input]}>{selectedCurrency}</Text>
-        <Text style={[S.amountGrey, S.input]}>|</Text>
-      </TouchableOpacity>
+    <View style={style}>
+      <View style={[S.container, S.item]}>
+        <TouchableOpacity style={S.item} onPress={onPress}>
+          <View style={S.imageWrapper}>
+            <Image style={S.tinyLogo} source={{uri: crypto.icons[selectedCurrency]}} />
+          </View>
+          <Text style={[S.currency, S.input]}>{selectedCurrency}</Text>
+          <Text style={[S.amountGrey, S.input]}>|</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={S.centerBlock} onPress={selectFrom}>
-        {amount === 0 && (
-          <Text style={[S.amountGrey, S.input]}>0.006 - 750</Text>
-        )}
-        {amount !== 0 && <Text style={[S.amount, S.input]}>{amount}</Text>}
-      </TouchableOpacity>
+        <TouchableOpacity style={S.centerBlock}>
+          <TextInput style={[S.amount, S.input]} keyboardType={'numeric'} />
+        </TouchableOpacity>
 
-      <TouchableOpacity style={S.centerBlock} onPress={selectFrom}>
-        {maxValue !== undefined && <Text style={[S.max, S.input]}>MAX</Text>}
-        {maxValue === undefined && <Text style={[S.max, S.input]}>        </Text>}
-      </TouchableOpacity>
+        <TouchableOpacity style={S.centerBlock} onPress={onMax}>
+          {maxValue !== undefined && <Text style={[S.max, S.input]}>MAX</Text>}
+          {maxValue === undefined && <Text style={[S.max, S.input]}> </Text>}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -159,4 +159,4 @@ const S = StyleSheet.create({
   },
 });
 
-export default CurrencyAndAmount;
+export default connect(() => ({}), {})(CurrencyAndAmount);

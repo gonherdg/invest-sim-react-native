@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, View, Text, FlatList} from 'react-native';
+import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
 import GS from 'src/style/style';
 import {colors} from 'src/style/gonstyle';
 import {NavigationProp} from '@react-navigation/core';
@@ -9,6 +9,8 @@ import * as crypto from 'src/cryptoworld.json';
 import BTC from 'src/components/icons/BTC';
 import CryptoRow from 'src/components/listItems/cryptoRow';
 import CurrencyAndAmount from 'src/components/input/currencyAndAmount';
+import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
+import ChooseCurrency from 'src/components/input/ChooseCurrency';
 
 interface ItemInterface {
   title: string;
@@ -23,6 +25,32 @@ const Trade: React.FC<{
   navigation: NavigationProp<any>;
 }> = ({navigation}) => {
   const [data, setData]: Array<any> = useState([]);
+  const [chooseCurrency, setChooseCurrency] = useState(false);
+  const [selectingInput, setSelectingInput] = useState('from');
+  const [fromInput, setFromInput] = useState({currency: 'ETH', amount: 0});
+  const [toInput, setToInput] = useState({currency: 'BTC', amount: 0});
+
+  const onSelectedFrom = () => {
+    console.log('onSelectedFrom');
+    setSelectingInput('from');
+    setChooseCurrency(true);
+  };
+
+  const onSelectedTo = () => {
+    console.log('onSelectedTo');
+    setSelectingInput('to');
+    setChooseCurrency(true);
+  };
+
+  const onSelectedCurrency = (curr: any) => {
+    console.log('onSelectedCurrency: ', curr);
+    if (selectingInput === 'from') {
+      setFromInput({currency: curr, amount: fromInput.amount});
+    } else {
+      setToInput({currency: curr, amount: toInput.amount});
+    }
+    setChooseCurrency(false);
+  };
 
   const renderItem = ({item}: ItemInterface) => {
     const onPress = () => {
@@ -61,7 +89,6 @@ const Trade: React.FC<{
   };
 
   useEffect(() => {
-    //setData(DATA);
     getChartData();
   }, []);
 
@@ -71,15 +98,55 @@ const Trade: React.FC<{
         <Text style={[S.title]}>Trade</Text>
       </View>
       <Text style={[S.text]}>From</Text>
-      <CurrencyAndAmount selectedCurrency={'USDT'} maxValue={1000}/>
+      <CurrencyAndAmount
+        selectedCurrency={fromInput.currency}
+        maxValue={1000}
+        style={undefined}
+        onPress={onSelectedFrom}
+        value={0}
+      />
 
       <Text style={[S.text]}>To</Text>
-      <CurrencyAndAmount selectedCurrency={'USDT'} />
+      <CurrencyAndAmount
+        selectedCurrency={toInput.currency}
+        maxValue={undefined}
+        style={undefined}
+        onPress={onSelectedTo}
+        value={0}
+      />
+
+      {chooseCurrency && (
+        <ChooseCurrency style={[S.choose]} onPress={onSelectedCurrency} />
+      )}
+
+      <TouchableOpacity style={[S.tradeButton]}>
+        <Text style={S.tradeText}>Trade</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
 const S = StyleSheet.create({
+  choose: {
+    backgroundColor: colors.white,
+    borderRadius: 4,
+    margin: 20,
+  },
+  tradeButton: {
+    padding: 10,
+    backgroundColor: colors.comp3,
+    textAlign: 'center',
+    margin: 12,
+    borderRadius: 4,
+  },
+  tradeText: {
+    fontSize: 26,
+    color: colors.white,
+    textAlign: 'center',
+  },
+  flex: {
+    flex: 1,
+  },
   container: {
     backgroundColor: colors.comp6,
     padding: 0,
