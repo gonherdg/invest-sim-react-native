@@ -35,6 +35,33 @@ const Trade: React.FC<{
   const [selectingInput, setSelectingInput] = useState('from');
   const [fromInput, setFromInput] = useState({currency: 'ETH', amount: ''});
   const [toInput, setToInput] = useState({currency: 'BTC', amount: ''});
+  const [tradeDisabled, setTradeDisabled] = useState(true);
+  const [initFlag, setInitFlag] = useState(true);
+  const [noEnoughMoney, setNotEnoughMoney] = useState('enough');
+
+  const verifyTradeable = () => {
+    if (
+      (isNaN(parseFloat(fromInput.amount)) &&
+        isNaN(parseFloat(toInput.amount))) ||
+      (parseFloat(fromInput.amount) === 0 &&
+        isNaN(parseFloat(toInput.amount))) ||
+      (isNaN(parseFloat(fromInput.amount)) && parseFloat(toInput.amount) === 0)
+    ) {
+      setTradeDisabled(true);
+    } else {
+      setTradeDisabled(false);
+    }
+
+    if (!walletData[fromInput.currency]) {
+      setNotEnoughMoney('emptyOfCurrency');
+    } else if (
+      walletData[fromInput.currency].amount < parseFloat(fromInput.amount)
+    ) {
+      setNotEnoughMoney('notEnough');
+    } else {
+      setNotEnoughMoney('enough');
+    }
+  };
 
   const onSelectedFrom = () => {
     console.log('onSelectedFrom');
@@ -77,10 +104,7 @@ const Trade: React.FC<{
   };
 
   const onMax = () => {
-    if (
-      !walletData[fromInput.currency] ||
-      walletData[fromInput.currency].amount == 0.0
-    ) {
+    if (!walletData[fromInput.currency]) {
       Alert.alert('Your account is empty of this currency');
       setFromInput({
         currency: fromInput.currency,
@@ -88,11 +112,21 @@ const Trade: React.FC<{
       });
       return;
     }
-    console.log('walletData:', walletData);
+    // eslint-disable-next-line eqeqeq
+    if (walletData[fromInput.currency].amount == 0.0) {
+      setFromInput({
+        currency: fromInput.currency,
+        amount: '',
+      });
+      return;
+    }
+
+    //console.log('walletData:', walletData);
     setFromInput({
       currency: fromInput.currency,
       amount: walletData[fromInput.currency].amount,
     });
+    setToInput({currency: toInput.currency, amount: ''});
   };
 
   const onTrade = async () => {
@@ -217,11 +251,16 @@ const Trade: React.FC<{
   useEffect(() => {
     const getAllData = async () => {
       const _marketData = await getMarketData();
-      console.log('_marketData:', _marketData);
       getWallet(_marketData);
     };
-    getAllData();
-  }, []);
+
+    if (initFlag) {
+      getAllData();
+      setInitFlag(false);
+    }
+
+    verifyTradeable();
+  }, [verifyTradeable]);
 
   return (
     <SafeAreaView style={[GS.containerAuth, S.container]}>
@@ -238,6 +277,7 @@ const Trade: React.FC<{
         onAmountChanged={onFromAmountChanged}
         onFocus={onRowFromFocus}
         onMax={onMax}
+        noEnoughMoney={noEnoughMoney}
       />
 
       <Text style={[S.text]}>To</Text>
@@ -250,6 +290,7 @@ const Trade: React.FC<{
         onAmountChanged={onToAmountChanged}
         onFocus={onRowToFocus}
         onMax={undefined}
+        noEnoughMoney={'enough'}
       />
 
       {chooseCurrency && (
@@ -260,8 +301,13 @@ const Trade: React.FC<{
         />
       )}
 
-      <TouchableOpacity style={[S.tradeButton]} onPress={onTrade}>
-        <Text style={S.tradeText}>Trade</Text>
+      <TouchableOpacity
+        style={[tradeDisabled ? S.tradeButtonDisabled : S.tradeButton]}
+        onPress={onTrade}
+        disabled={tradeDisabled}>
+        <Text style={tradeDisabled ? S.tradeTextDisabled : S.tradeText}>
+          Trade
+        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -280,9 +326,21 @@ const S = StyleSheet.create({
     margin: 12,
     borderRadius: 4,
   },
+  tradeButtonDisabled: {
+    padding: 10,
+    backgroundColor: '#353',
+    textAlign: 'center',
+    margin: 12,
+    borderRadius: 4,
+  },
   tradeText: {
     fontSize: 26,
     color: colors.white,
+    textAlign: 'center',
+  },
+  tradeTextDisabled: {
+    fontSize: 26,
+    color: colors.grey,
     textAlign: 'center',
   },
   flex: {

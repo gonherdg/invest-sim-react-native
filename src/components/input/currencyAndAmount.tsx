@@ -22,6 +22,7 @@ const CurrencyAndAmount: React.FC<{
   onAmountChanged: any;
   onFocus: any;
   onMax: any;
+  noEnoughMoney: string;
   style: any;
 }> = ({
   selectedCurrency = 'ETH',
@@ -30,6 +31,7 @@ const CurrencyAndAmount: React.FC<{
   onAmountChanged,
   onFocus,
   onMax,
+  noEnoughMoney,
   style,
   value,
 }) => {
@@ -63,12 +65,21 @@ const CurrencyAndAmount: React.FC<{
         </TouchableOpacity>
 
         <TextInput
-          style={[S.centerBlock, S.amount, S.input]}
+          style={[
+            S.centerBlock,
+            S.amount,
+            S.input,
+            noEnoughMoney === 'notEnough'
+              ? S.orange
+              : noEnoughMoney === 'emptyOfCurrency'
+              ? S.red
+              : S.amountColor,
+          ]}
           keyboardType={'numeric'}
           placeholder={'0'}
           onChangeText={(text: string) => onAmountChanged(text)}
           onFocus={onFocus}
-          value={value === '' ? value : parseFloat(value).toFixed(7)}
+          value={value}
         />
 
         <TouchableOpacity style={S.centerBlock} onPress={onMax}>
@@ -133,6 +144,15 @@ const S = StyleSheet.create({
     color: colors.comp6,
     fontSize: 17,
     flex: 4,
+  },
+  orange: {
+    color: colors.orange,
+  },
+  red: {
+    color: colors.red,
+  },
+  amountColor: {
+    color: colors.comp6,
   },
   amountGrey: {
     color: colors.grey,
