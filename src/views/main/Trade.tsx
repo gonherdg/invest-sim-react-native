@@ -13,7 +13,7 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import ChooseCurrency from 'src/components/input/ChooseCurrency';
 import Market from 'src/api/routes/Market';
 import Wallet from 'src/api/routes/Wallet';
-import { parse } from 'querystring';
+import {parse} from 'querystring';
 
 interface ItemInterface {
   title: string;
@@ -27,11 +27,13 @@ interface ItemInterface {
 const Trade: React.FC<{
   navigation: NavigationProp<any>;
 }> = ({navigation}) => {
-  const [data, setData]: Array<any> = useState([]);
+  const [walletData, setWalletData]: Array<any> = useState([]);
+  const [marketData, setMarketData]: Array<any> = useState([]);
+
   const [chooseCurrency, setChooseCurrency] = useState(false);
   const [selectingInput, setSelectingInput] = useState('from');
-  const [fromInput, setFromInput] = useState({currency: 'ETH', amount: '0'});
-  const [toInput, setToInput] = useState({currency: 'BTC', amount: '0'});
+  const [fromInput, setFromInput] = useState({currency: 'ETH', amount: ''});
+  const [toInput, setToInput] = useState({currency: 'BTC', amount: ''});
 
   const onSelectedFrom = () => {
     console.log('onSelectedFrom');
@@ -56,15 +58,27 @@ const Trade: React.FC<{
   };
 
   const onFromAmountChanged = (_amount: any) => {
-    console.log('amount:', _amount);
     setFromInput({currency: fromInput.currency, amount: _amount});
-    //console.log('new from amount:', fromInput);
   };
 
   const onToAmountChanged = (_amount: any) => {
-    console.log('amount:', _amount);
     setToInput({currency: toInput.currency, amount: _amount});
-    //console.log('new to amount:', toInput);
+  };
+
+  const onRowFromFocus = () => {
+    setToInput({currency: toInput.currency, amount: ''});
+  };
+
+  const onRowToFocus = () => {
+    setFromInput({currency: fromInput.currency, amount: ''});
+  };
+
+  const onMax = () => {
+    console.log('walletData:', walletData);
+    setFromInput({
+      currency: fromInput.currency,
+      amount: walletData[fromInput.currency].amount,
+    });
   };
 
   const onTrade = async () => {
@@ -75,10 +89,10 @@ const Trade: React.FC<{
       buyingAmount: parseFloat(toInput.amount),
     };
     console.log(obj);
-    console.log('data:', data);
+    console.log('marketData:', marketData);
 
     let fromPriceUSD = 0.0;
-    data.forEach((item: any) => {
+    marketData.forEach((item: any) => {
       if (item.title === fromInput.currency) {
         fromPriceUSD = item.price;
         console.log('fromPriceUSD: ', fromPriceUSD);
@@ -86,7 +100,7 @@ const Trade: React.FC<{
       }
     });
     let toPriceUSD = 0.0;
-    data.forEach((item: any) => {
+    marketData.forEach((item: any) => {
       if (item.title === toInput.currency) {
         toPriceUSD = item.price;
         console.log('toPriceUSD: ', toPriceUSD);
@@ -112,29 +126,40 @@ const Trade: React.FC<{
     console.log('TRADE:', res);
   };
 
-  const renderItem = ({item}: ItemInterface) => {
-    const onPress = () => {
-      console.log('asdasd', item.title);
-    };
-
-    return (
-      <CryptoRow
-        title={item.title}
-        subtitle={item.subtitle}
-        imgSrc={item.imgSrc}
-        price={item.price}
-        variation={item.variation}
-        onPress={onPress}
-      />
-    );
+  const getWallet = async (_marketData: any): Promise<any> => {
+    let res = await api.wallet.getMyWallet();
+    const dataArray: any = {};
+    Object.entries(res).forEach((item, idx) => {
+      const shortName = item[0];
+      const amount = item[1];
+      const marketCoin = _marketData[shortName];
+      let price = 0.0;
+      if (marketCoin) {
+        price = marketCoin.price;
+      }
+      let valueInUSD = 0.0;
+      if (price) {
+        valueInUSD = _marketData[shortName].price * amount;
+      }
+      const newItem = {
+        id: idx,
+        title: shortName,
+        subtitle: crypto.largeName[shortName],
+        amount: item[1].toFixed(7),
+        imgSrc: crypto.icons[shortName],
+        price: '$' + valueInUSD.toFixed(8),
+      };
+      dataArray[shortName] = newItem;
+    });
+    setWalletData(dataArray);
   };
 
-  const getChartData = async () => {
+  const getMarketData = async () => {
     let res = await api.market.getCryptos();
     //console.log('market data:', res);
 
     const _data: any = [];
-    res.data.forEach(item => {
+    res.data.forEach((item: any) => {
       const newItem = {
         id: item._id,
         title: item.shortName,
@@ -145,11 +170,17 @@ const Trade: React.FC<{
       };
       _data.push(newItem);
     });
-    setData(_data);
+    setMarketData(_data);
+    return _data;
   };
 
   useEffect(() => {
-    getChartData();
+    const getAllData = async () => {
+      const _marketData = await getMarketData();
+      console.log('_marketData:', _marketData);
+      getWallet(_marketData);
+    };
+    getAllData();
   }, []);
 
   return (
@@ -165,6 +196,8 @@ const Trade: React.FC<{
         onPress={onSelectedFrom}
         value={fromInput.amount}
         onAmountChanged={onFromAmountChanged}
+        onFocus={onRowFromFocus}
+        onMax={onMax}
       />
 
       <Text style={[S.text]}>To</Text>
@@ -175,6 +208,7 @@ const Trade: React.FC<{
         onPress={onSelectedTo}
         value={toInput.amount}
         onAmountChanged={onToAmountChanged}
+        onFocus={onRowToFocus}
       />
 
       {chooseCurrency && (

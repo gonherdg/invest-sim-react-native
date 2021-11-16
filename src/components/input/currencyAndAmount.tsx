@@ -12,20 +12,20 @@ const CurrencyAndAmount: React.FC<{
   maxValue: Number | undefined;
   onPress: any;
   onAmountChanged: any;
+  onFocus: any;
+  onMax: any;
   style: any;
 }> = ({
   selectedCurrency = 'ETH',
   maxValue = undefined,
   onPress,
   onAmountChanged,
+  onFocus,
+  onMax,
   style,
   value,
 }) => {
   const [amount, setAmount] = useState('0');
-
-  const onMax = () => {
-    console.log('onMax');
-  };
 
   useEffect(() => {
     //setAmount(value);
@@ -45,15 +45,14 @@ const CurrencyAndAmount: React.FC<{
           <Text style={[S.amountGrey, S.input]}>|</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={S.centerBlock}>
-          <TextInput
-            style={[S.amount, S.input]}
-            keyboardType={'numeric'}
-            placeholder={'0'}
-            onChangeText={(text: string) => onAmountChanged(text)}
-            value={value}
-          />
-        </TouchableOpacity>
+        <TextInput
+          style={[S.centerBlock, S.amount, S.input]}
+          keyboardType={'numeric'}
+          placeholder={'0'}
+          onChangeText={(text: string) => onAmountChanged(text)}
+          onFocus={onFocus}
+          value={value}
+        />
 
         <TouchableOpacity style={S.centerBlock} onPress={onMax}>
           {maxValue !== undefined && <Text style={[S.max, S.input]}>MAX</Text>}
@@ -116,6 +115,7 @@ const S = StyleSheet.create({
   amount: {
     color: colors.comp6,
     fontSize: 17,
+    flex: 4,
   },
   amountGrey: {
     color: colors.grey,
