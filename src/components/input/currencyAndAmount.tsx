@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Image,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {colors} from 'src/style/gonstyle';
 // import BTC from '../icons/BTC';
@@ -27,6 +35,15 @@ const CurrencyAndAmount: React.FC<{
 }) => {
   const [amount, setAmount] = useState('0');
 
+  const DismissKeyboardHOC = Comp => {
+    return ({children, ...props}) => (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <Comp {...props}>{children}</Comp>
+      </TouchableWithoutFeedback>
+    );
+  };
+  const DismissKeyboardView = DismissKeyboardHOC(View);
+
   useEffect(() => {
     //setAmount(value);
   }, []);
@@ -51,7 +68,7 @@ const CurrencyAndAmount: React.FC<{
           placeholder={'0'}
           onChangeText={(text: string) => onAmountChanged(text)}
           onFocus={onFocus}
-          value={value}
+          value={value === '' ? value : parseFloat(value).toFixed(7)}
         />
 
         <TouchableOpacity style={S.centerBlock} onPress={onMax}>

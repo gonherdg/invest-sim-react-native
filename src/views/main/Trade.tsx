@@ -1,19 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  Alert,
+  Keyboard,
+} from 'react-native';
 import GS from 'src/style/style';
 import {colors} from 'src/style/gonstyle';
 import {NavigationProp} from '@react-navigation/core';
 import {connect} from 'react-redux';
 import api from 'src/api';
 import * as crypto from 'src/cryptoworld.json';
-import BTC from 'src/components/icons/BTC';
-import CryptoRow from 'src/components/listItems/cryptoRow';
 import CurrencyAndAmount from 'src/components/input/currencyAndAmount';
-import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import ChooseCurrency from 'src/components/input/ChooseCurrency';
-import Market from 'src/api/routes/Market';
-import Wallet from 'src/api/routes/Wallet';
-import {parse} from 'querystring';
 
 interface ItemInterface {
   title: string;
@@ -29,7 +31,6 @@ const Trade: React.FC<{
 }> = ({navigation}) => {
   const [walletData, setWalletData]: Array<any> = useState([]);
   const [marketData, setMarketData]: Array<any> = useState([]);
-
   const [chooseCurrency, setChooseCurrency] = useState(false);
   const [selectingInput, setSelectingInput] = useState('from');
   const [fromInput, setFromInput] = useState({currency: 'ETH', amount: ''});
@@ -39,12 +40,14 @@ const Trade: React.FC<{
     console.log('onSelectedFrom');
     setSelectingInput('from');
     setChooseCurrency(true);
+    Keyboard.dismiss();
   };
 
   const onSelectedTo = () => {
     console.log('onSelectedTo');
     setSelectingInput('to');
     setChooseCurrency(true);
+    Keyboard.dismiss();
   };
 
   const onSelectedCurrency = (curr: any) => {
@@ -74,6 +77,17 @@ const Trade: React.FC<{
   };
 
   const onMax = () => {
+    if (
+      !walletData[fromInput.currency] ||
+      walletData[fromInput.currency].amount == 0.0
+    ) {
+      Alert.alert('Your account is empty of this currency');
+      setFromInput({
+        currency: fromInput.currency,
+        amount: '',
+      });
+      return;
+    }
     console.log('walletData:', walletData);
     setFromInput({
       currency: fromInput.currency,
@@ -82,6 +96,17 @@ const Trade: React.FC<{
   };
 
   const onTrade = async () => {
+    if (
+      (isNaN(parseFloat(fromInput.amount)) &&
+        isNaN(parseFloat(toInput.amount))) ||
+      (parseFloat(fromInput.amount) === 0 &&
+        isNaN(parseFloat(toInput.amount))) ||
+      (isNaN(parseFloat(fromInput.amount)) && parseFloat(toInput.amount) === 0)
+    ) {
+      Alert.alert('Trade is not possible with the given values');
+      return;
+    }
+
     const obj = {
       sellingCurrency: fromInput.currency,
       sellingAmount: parseFloat(fromInput.amount),
@@ -124,6 +149,21 @@ const Trade: React.FC<{
     }
     let res = await api.wallet.trade(obj);
     console.log('TRADE:', res);
+    const tradeMessageOK =
+      'Dropped ' +
+      obj.sellingAmount.toFixed(8) +
+      obj.sellingCurrency +
+      ' Gained ' +
+      obj.buyingAmount.toFixed(8) +
+      obj.buyingCurrency;
+
+    if (res.state === 'Error') {
+      Alert.alert(res.state, res.message);
+    } else {
+      Alert.alert(res.state, tradeMessageOK);
+    }
+
+    getWallet(marketData);
   };
 
   const getWallet = async (_marketData: any): Promise<any> => {
@@ -145,9 +185,9 @@ const Trade: React.FC<{
         id: idx,
         title: shortName,
         subtitle: crypto.largeName[shortName],
-        amount: item[1].toFixed(7),
+        amount: item[1].toString(),
         imgSrc: crypto.icons[shortName],
-        price: '$' + valueInUSD.toFixed(8),
+        price: '$' + valueInUSD.toString(),
       };
       dataArray[shortName] = newItem;
     });
@@ -209,10 +249,15 @@ const Trade: React.FC<{
         value={toInput.amount}
         onAmountChanged={onToAmountChanged}
         onFocus={onRowToFocus}
+        onMax={undefined}
       />
 
       {chooseCurrency && (
-        <ChooseCurrency style={[S.choose]} onPress={onSelectedCurrency} />
+        <ChooseCurrency
+          style={[S.choose]}
+          onPress={onSelectedCurrency}
+          direction={selectingInput}
+        />
       )}
 
       <TouchableOpacity style={[S.tradeButton]} onPress={onTrade}>

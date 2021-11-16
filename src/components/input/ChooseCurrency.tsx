@@ -15,10 +15,11 @@ import * as crypto from 'src/cryptoworld.json';
 import BTC from 'src/components/icons/BTC';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const ChooseCurrency: React.FC<{onPress: Function; style: any}> = ({
-  onPress,
-  style,
-}) => {
+const ChooseCurrency: React.FC<{
+  onPress: Function;
+  style: any;
+  direction: string;
+}> = ({direction, onPress, style}) => {
   const [data, setData]: Array<any> = useState([]);
 
   const renderItem = ({item}: any) => {
@@ -63,7 +64,7 @@ const ChooseCurrency: React.FC<{onPress: Function; style: any}> = ({
   return (
     <SafeAreaView style={[GS.containerAuth, style]}>
       <View style={S.container}>
-        <Text style={[S.text]}>Trade</Text>
+        <Text style={[S.title]}>Trade {direction}</Text>
       </View>
       <FlatList
         style={[S.list, style]}
@@ -87,8 +88,8 @@ const S = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    margin: 10,
-    color: '#222',
+    margin: 2,
+    color: '#444',
     textAlign: 'center',
   },
   input: {
@@ -120,8 +121,10 @@ const S = StyleSheet.create({
     borderRadius: 6,
   },
   title: {
+    marginTop: 10,
     color: colors.comp7,
-    fontSize: 15,
+    fontSize: 20,
+    textAlign: 'center',
   },
   subtitle: {
     color: '#99b',
