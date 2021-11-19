@@ -13,7 +13,7 @@ import {NavigationProp} from '@react-navigation/core';
 import {connect} from 'react-redux';
 import api from 'src/api';
 import * as crypto from 'src/cryptoworld.json';
-import CurrencyAndAmount from 'src/components/input/currencyAndAmount';
+import CurrencyAndAmount from 'src/components/input/CurrencyAndAmount';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import ChooseCurrency from 'src/components/input/ChooseCurrency';
 

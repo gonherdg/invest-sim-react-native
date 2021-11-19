@@ -125,7 +125,6 @@ const Charts: React.FC<{
 
   const renderItem = ({item}: ItemInterface) => {
     const onPress = () => {
-      console.log('asdasd', item.title);
       navigation.navigate('Trade');
     };
 

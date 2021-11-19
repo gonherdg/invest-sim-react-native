@@ -15,7 +15,7 @@ import {connect} from 'react-redux';
 import api from 'src/api';
 import * as crypto from 'src/cryptoworld.json';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import CurrencyAndAmount from 'src/components/input/currencyAndAmount';
+import CurrencyAndAmount from 'src/components/input/CurrencyAndAmount';
 import ChooseCurrency from 'src/components/input/ChooseCurrency';
 import WalletItem from 'src/components/listItems/WalletItem';
 

@@ -46,10 +46,6 @@ const CurrencyAndAmount: React.FC<{
   };
   const DismissKeyboardView = DismissKeyboardHOC(View);
 
-  useEffect(() => {
-    //setAmount(value);
-  }, []);
-
   return (
     <View style={style}>
       <View style={[S.container, S.item]}>

@@ -1,15 +1,23 @@
 {
   "icons": {
-    "BNB": "https://cryptologos.cc/logos/binance-coin-bnb-logo.png?v=014",
-    "BTC": "https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=014",
-    "ETH": "https://cryptologos.cc/logos/ethereum-eth-logo.png?v=014",
-    "USDT": "https://cryptologos.cc/logos/tether-usdt-logo.png?v=014",
-    "DOT": "https://cryptologos.cc/logos/polkadot-new-dot-logo.png?v=014",
-    "ADA": "https://cryptologos.cc/logos/cardano-ada-logo.png?v=014",
-    "SOL": "https://cryptologos.cc/logos/solana-sol-logo.png?v=014",
-    "USDC": "https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=014",
-    "DOGE": "https://cryptologos.cc/logos/dogecoin-doge-logo.png?v=014",
-    "SHIB": "https://cryptologos.cc/logos/shiba-inu-shib-logo.png?v=014"
+    "BNB": "https://cryptologos.cc/logos/thumbs/binance-coin.png?v=014",
+    "BTC": "https://cryptologos.cc/logos/thumbs/bitcoin.png?v=014",
+    "ETH": "https://cryptologos.cc/logos/thumbs/ethereum.png?v=014",
+    "USDT": "https://cryptologos.cc/logos/thumbs/tether.png?v=014",
+    "DOT": "https://cryptologos.cc/logos/thumbs/polkadot-new.png?v=014",
+    "ADA": "https://cryptologos.cc/logos/thumbs/cardano.png?v=014",
+    "SOL": "https://cryptologos.cc/logos/thumbs/solana.png?v=014",
+    "USDC": "https://cryptologos.cc/logos/thumbs/usd-coin.png?v=014",
+    "DOGE": "https://cryptologos.cc/logos/thumbs/dogecoin.png?v=014",
+    "SHIB": "https://cryptologos.cc/logos/thumbs/shiba-inu.png?v=014",
+    "XRP": "https://cryptologos.cc/logos/thumbs/xrp.png?v=014",
+    "LUNA": "https://cryptologos.cc/logos/thumbs/terra-luna.png?v=014",
+    "AVAX": "https://cryptologos.cc/logos/thumbs/avalanche.png?v=014",
+    "UNI": "https://cryptologos.cc/logos/thumbs/uniswap.png?v=014",
+    "ALGO": "https://cryptologos.cc/logos/thumbs/algorand.png?v=014",
+    "AXS": "https://cryptologos.cc/logos/thumbs/axie-infinity.png?v=014",
+    "NEAR": "https://cryptologos.cc/logos/thumbs/near-protocol.png?v=014",
+    "FTM": "https://cryptologos.cc/logos/thumbs/fantom.png?v=014"
   },
   "largeName": {
     "BNB": "Binance coin",
@@ -36,6 +44,7 @@
     "ALGO": "Algorand",
     "BCH": "Bitcoin Cash",
     "AXS": "Axie Infinity",
-    "DAI": "Dai"
+    "DAI": "Dai",
+    "NEAR": "NEAR Protocol"
   }
 }

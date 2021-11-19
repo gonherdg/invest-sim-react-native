@@ -139,8 +139,8 @@ const S = StyleSheet.create({
     marginTop: 4,
     marginBottom: 14,
     backgroundColor: '#eee',
-    padding: 6,
-    borderRadius: 6,
+    padding: 4,
+    borderRadius: 4,
   },
   withdrawSecondFrame: {
     marginTop: 4,
@@ -161,7 +161,7 @@ const S = StyleSheet.create({
     padding: 1,
     marginVertical: 1,
     marginHorizontal: 1,
-    borderRadius: 20,
+    borderRadius: 4,
   },
   title: {
     color: colors.comp7,
@@ -183,6 +183,7 @@ const S = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 20,
+    resizeMode: 'contain',
   },
   firstBox: {
     flex: 1,

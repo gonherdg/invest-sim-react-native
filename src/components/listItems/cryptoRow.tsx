@@ -112,6 +112,7 @@ const S = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 20,
+    resizeMode: 'contain',
   },
   firstBox: {
     flex: 1,
