@@ -81,7 +81,7 @@ const Login: React.FC<{
   }
 */
   return (
-    <SafeAreaView style={[GS.containerAuth, S.out]}>
+    <SafeAreaView style={[GS.containerAuth]}>
       <View style={S.container}>
         <Text style={[S.title]}>Investor Simulator</Text>
         <Text style={[S.text]}>Login</Text>
@@ -140,7 +140,7 @@ const S = StyleSheet.create({
   },
   button: {
     color: '#222',
-    borderColor: colors.comp1,
+    borderColor: colors.comp7,
     borderWidth: 1,
   },
   out: {
@@ -150,9 +150,9 @@ const S = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: colors.comp5,
+    backgroundColor: colors.white,
     padding: 20,
-    borderRadius: 20,
+    borderRadius: 4,
     margin: 10,
     marginHorizontal: 10,
   },
@@ -160,7 +160,7 @@ const S = StyleSheet.create({
     textAlign: 'center',
     fontSize: 40,
     margin: 10,
-    color: colors.comp1,
+    color: colors.comp7,
   },
   text: {
     fontSize: 30,

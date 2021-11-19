@@ -132,7 +132,7 @@ const Login: React.FC<{
 
 const S = StyleSheet.create({
   control: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 10,
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -140,7 +140,7 @@ const S = StyleSheet.create({
   },
   button: {
     color: '#222',
-    borderColor: colors.comp1,
+    borderColor: colors.comp7,
     borderWidth: 1,
   },
   out: {
@@ -150,7 +150,7 @@ const S = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: colors.comp6,
+    backgroundColor: colors.comp7,
     padding: 20,
     borderRadius: 20,
     margin: 10,
@@ -160,7 +160,7 @@ const S = StyleSheet.create({
     textAlign: 'center',
     fontSize: 40,
     margin: 10,
-    color: colors.comp1,
+    color: colors.white,
   },
   text: {
     fontSize: 30,

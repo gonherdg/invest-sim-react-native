@@ -26,9 +26,9 @@ const CryptoRow = (item: ItemInterface) => {
       <TouchableOpacity style={S.item} onPress={item.onPress}>
         <View style={S.firstBox}>
           <View style={S.imageWrapper}>
-            {/*<Image style={S.tinyLogo} source={{uri: item.imgSrc}} />*/}
+            <Image style={S.tinyLogo} source={{uri: item.imgSrc}} />
             {/*<BTC style={S.tinyLogo} />*/}
-            <BTC style={S.tinyLogo} />
+            {/*<BTC style={S.tinyLogo} />*/}
           </View>
           <View style={S.secondBox}>
             <Text style={S.title}>{item.title}</Text>
@@ -36,12 +36,14 @@ const CryptoRow = (item: ItemInterface) => {
           </View>
         </View>
 
+        {/*
         <Image
           style={[S.chart, S.firstBox]}
           source={{
             uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNmoLz5weQDnEqFVP70jaG3wDf-1MkmK0yrA&usqp=CAU',
           }}
         />
+        */}
 
         <View style={S.secondBox}>
           <Text style={S.price}>{item.price.toFixed(4)}</Text>

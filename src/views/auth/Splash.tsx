@@ -36,7 +36,7 @@ const S = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.comp7,
+    backgroundColor: colors.white,
     padding: 20,
     height: 970,
     fontWeight: 'bold',
@@ -56,7 +56,6 @@ const S = StyleSheet.create({
   top: {
     marginTop: 20,
   },
-  
 });
 
 export default connect(() => ({}), {})(Splash);
