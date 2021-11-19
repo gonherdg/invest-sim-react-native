@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import api from 'src/api';
 import * as crypto from 'src/cryptoworld.json';
 import BTC from 'src/components/icons/BTC';
-import CryptoRow from 'src/components/listItems/cryptoRow';
+import CryptoRow from 'src/components/listItems/CryptoRow';
 
 interface ItemInterface {
   title: string;

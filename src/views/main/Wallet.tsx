@@ -17,6 +17,7 @@ import * as crypto from 'src/cryptoworld.json';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import CurrencyAndAmount from 'src/components/input/currencyAndAmount';
 import ChooseCurrency from 'src/components/input/ChooseCurrency';
+import WalletItem from 'src/components/listItems/WalletItem';
 
 interface ItemInterface {
   title: string;
@@ -159,13 +160,14 @@ const Wallet: React.FC<{
   });
 
   const renderItem = ({item}: ItemInterface) => (
-    <Item
+    <WalletItem
       title={item.title}
       subtitle={item.subtitle}
       imgSrc={item.imgSrc}
       price={item.price}
       amount={item.amount}
       variation={undefined}
+      onWithdraw={getAllData}
     />
   );
 
@@ -262,11 +264,16 @@ const Wallet: React.FC<{
     setData(dataArray);
   };
 
+  const getAllData = async () => {
+    const _marketData = await getMarketData();
+    getWallet(_marketData);
+  };
+
   useEffect(() => {
-    const getAllData = async () => {
+    /*const getAllData = async () => {
       const _marketData = await getMarketData();
       getWallet(_marketData);
-    };
+    };*/
     getAllData();
     setInterval(getAllData, 20000);
   }, []);
