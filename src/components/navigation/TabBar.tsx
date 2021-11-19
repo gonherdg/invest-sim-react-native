@@ -8,43 +8,41 @@ const TabBar: React.FC<BottomTabBarProps> = ({state, navigation}) => {
     <View style={[GS.rowCenterBetween, S.container]}>
       <TouchableOpacity
         style={S.center}
-        onPress={() => navigation.navigate('Home')}>
+        onPress={() => navigation.navigate('Market')}>
         {state.index !== 0 && (
           <Image
             resizeMode="contain"
-            source={require('src/assets/images/Home_deactive.png')}
+            source={require('src/assets/images/coins_grey.png')}
             style={S.icon}
           />
         )}
         {state.index === 0 && (
           <Image
             resizeMode="contain"
-            source={require('src/assets/images/Home_activate.png')}
+            source={require('src/assets/images/coins_violet.png')}
             style={S.icon}
           />
         )}
-        <Text style={[GS.pLink, state.index === 0 && S.active]}>Home</Text>
+        <Text style={[GS.pLink, state.index === 0 && S.active]}>Market</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={S.center}
-        onPress={() => navigation.navigate('Monitoring')}>
+        onPress={() => navigation.navigate('Wallet')}>
         {state.index !== 1 && (
           <Image
             resizeMode="contain"
-            source={require('src/assets/images/Monitoraggio_deactive.png')}
+            source={require('src/assets/images/wallet_grey.png')}
             style={S.icon}
           />
         )}
         {state.index === 1 && (
           <Image
             resizeMode="contain"
-            source={require('src/assets/images/Monitoraggio_active.png')}
+            source={require('src/assets/images/wallet_violet.png')}
             style={S.icon}
           />
         )}
-        <Text style={[GS.pLink, state.index === 1 && S.active]}>
-          Monitoraggio
-        </Text>
+        <Text style={[GS.pLink, state.index === 1 && S.active]}>Wallet</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={S.center}
@@ -52,18 +50,18 @@ const TabBar: React.FC<BottomTabBarProps> = ({state, navigation}) => {
         {state.index !== 2 && (
           <Image
             resizeMode="contain"
-            source={require('src/assets/images/Profilo_deactive.png')}
+            source={require('src/assets/images/account_small_grey.png')}
             style={S.icon}
           />
         )}
         {state.index === 2 && (
           <Image
             resizeMode="contain"
-            source={require('src/assets/images/Profilo_active.png')}
+            source={require('src/assets/images/account_small_violet.png')}
             style={S.icon}
           />
         )}
-        <Text style={[GS.pLink, state.index === 2 && S.active]}>Profilo</Text>
+        <Text style={[GS.pLink, state.index === 2 && S.active]}>Profile</Text>
       </TouchableOpacity>
     </View>
   );

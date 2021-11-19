@@ -8,6 +8,7 @@ import {
   Pressable,
   ActivityIndicator,
   Dimensions,
+  Image,
 } from 'react-native';
 import GS from 'src/style/style';
 import {colors} from 'src/style/gonstyle';
@@ -83,7 +84,11 @@ const Login: React.FC<{
   return (
     <SafeAreaView style={[GS.containerAuth]}>
       <View style={S.container}>
-        <Text style={[S.title]}>Investor Simulator</Text>
+        <Image
+          resizeMode="contain"
+          source={require('src/assets/images/investor_sim_logo.png')}
+          style={S.logo}
+        />
         <Text style={[S.text]}>Login</Text>
         <TextInput
           returnKeyType="next"
@@ -131,6 +136,10 @@ const Login: React.FC<{
 };
 
 const S = StyleSheet.create({
+  logo: {
+    width: 120,
+    height: 120,
+  },
   control: {
     backgroundColor: '#fff',
     borderRadius: 10,
@@ -163,9 +172,10 @@ const S = StyleSheet.create({
     color: colors.comp7,
   },
   text: {
-    fontSize: 30,
+    fontSize: 20,
     margin: 10,
-    color: '#fff',
+    marginTop: 20,
+    color: '#bbe',
   },
   input: {
     maxHeight: 50,

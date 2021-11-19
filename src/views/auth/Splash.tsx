@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, View, Text, TextInput} from 'react-native';
+import {SafeAreaView, StyleSheet, View, Text, TextInput, Image} from 'react-native';
 import GS from 'src/style/style';
 import { colors } from 'src/style/gonstyle';
 import {NavigationContext, NavigationProp} from '@react-navigation/core';
@@ -18,13 +18,17 @@ const Splash: React.FC<{
 
   const onPress = () => {
     navigation.navigate('Login');
-  }
+  };
 
   return (
     <SafeAreaView style={[GS.containerAuth, S.container]}>
       <TouchableOpacity onPress={onPress}>
         <View style={S.container}>
-          <Text style={[S.text]}>Investor Simulator</Text>
+          <Image
+            resizeMode="contain"
+            source={require('src/assets/images/investor_sim_logo.png')}
+            style={S.text}
+          />
         </View>
       </TouchableOpacity>
     </SafeAreaView>
